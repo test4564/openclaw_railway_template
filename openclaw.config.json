@@ -1,6 +1,10 @@
 {
-  "agent": {
-    "model": "anthropic/claude-sonnet-4-20250514"
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-20250514"
+      }
+    }
   },
   "gateway": {
     "auth": {
@@ -9,6 +13,7 @@
   },
   "channels": {
     "telegram": {
+      "enabled": true,
       "botToken": "${TELEGRAM_BOT_TOKEN}"
     }
   }
