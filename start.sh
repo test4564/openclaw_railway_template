@@ -1,12 +1,16 @@
 #!/bin/bash
 set -e
 
-# Create config directory if needed
-mkdir -p ~/.openclaw
+# Create required directories with proper permissions
+mkdir -p ~/.openclaw/workspace
+mkdir -p ~/.openclaw/agents/main/sessions
+mkdir -p ~/.openclaw/credentials
+chmod 700 ~/.openclaw
 
-# Always copy fresh config (overwrites old format if volume has stale config)
+# Copy fresh config
 echo "Copying configuration template..."
 cp ~/openclaw.config.json ~/.openclaw/openclaw.json
+chmod 600 ~/.openclaw/openclaw.json
 
 # Auto-generate gateway token if not provided
 if [ -z "$OPENCLAW_GATEWAY_TOKEN" ]; then

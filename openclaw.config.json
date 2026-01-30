@@ -1,12 +1,14 @@
 {
   "agents": {
     "defaults": {
+      "workspace": "~/.openclaw/workspace",
       "model": {
         "primary": "anthropic/claude-sonnet-4-20250514"
       }
     }
   },
   "gateway": {
+    "mode": "local",
     "auth": {
       "token": "${OPENCLAW_GATEWAY_TOKEN}"
     }
@@ -14,7 +16,8 @@
   "channels": {
     "telegram": {
       "enabled": true,
-      "botToken": "${TELEGRAM_BOT_TOKEN}"
+      "botToken": "${TELEGRAM_BOT_TOKEN}",
+      "dmPolicy": "pairing"
     }
   }
 }
