@@ -3,7 +3,7 @@ FROM node:22-bookworm-slim
 # Install git (required for some npm dependencies)
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
-# Install OpenClaw globally via npm (recommended approach)
+# Install OpenClaw globally via npm
 RUN npm install -g openclaw@latest
 
 # Create non-root user directory structure
@@ -13,11 +13,8 @@ RUN mkdir -p /home/node/.openclaw && chown -R node:node /home/node
 USER node
 WORKDIR /home/node
 
-# Copy config template and startup script
-COPY --chown=node:node openclaw.config.json /home/node/
+# Copy startup script
 COPY --chown=node:node start.sh /home/node/
-
-# Make startup script executable
 RUN chmod +x /home/node/start.sh
 
 CMD ["/home/node/start.sh"]

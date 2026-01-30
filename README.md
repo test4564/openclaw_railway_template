@@ -24,14 +24,26 @@ Click the deploy button above and set these variables:
 | `TELEGRAM_BOT_TOKEN` | Token from @BotFather |
 | `TELEGRAM_ALLOWED_USERS` | Your user ID from @userinfobot |
 
-### 3. Add Storage (Optional but Recommended)
+### 3. Add Storage (Recommended)
 
 Without a volume, conversation history is lost on redeploy.
 
-1. Service → **Settings** → **Volumes** → **Add Volume**
-2. Mount path: `/home/node/.openclaw`
-3. Add variable: `RAILWAY_RUN_UID=0`
-4. Redeploy
+**Via CLI:**
+```bash
+railway link
+railway volume add --mount-path /home/node/.openclaw
+```
+
+**Via UI:**
+1. Open your project in Railway dashboard
+2. Right-click on the service in the canvas view
+3. Select **Attach Volume**
+4. Mount path: `/home/node/.openclaw`
+
+Then add this environment variable:
+- `RAILWAY_RUN_UID` = `0`
+
+Redeploy the service.
 
 ### 4. Chat
 
@@ -42,28 +54,14 @@ Message your bot on Telegram!
 To run commands inside your container:
 
 ```bash
-railway link    # connect to your project (run from any directory)
-railway ssh     # shell into the running container
+railway link
+railway ssh
 ```
 
-Then you can run:
+Then run:
 ```bash
 openclaw health
 openclaw channels list
-```
-
-Note: You don't need this repository locally - `railway link` works from any directory.
-
-## Local Development
-
-Clone this repo if you want to modify the template:
-
-```bash
-git clone https://github.com/BasedLukas/openclaw_railway_template.git
-cd openclaw_railway_template
-cp .env.example .env  # add your credentials
-railway link
-railway up
 ```
 
 ## All Variables
@@ -79,4 +77,4 @@ railway up
 ## Links
 
 - [OpenClaw Docs](https://docs.openclaw.ai)
-- [Railway Docs](https://docs.railway.app/)
+- [Railway Docs](https://docs.railway.com)
