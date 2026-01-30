@@ -2,7 +2,7 @@
 
 One-click deployment for your personal AI assistant. Chat with Claude via Telegram, Discord, Slack, or WhatsApp.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/template/TEMPLATE_ID)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/F-nXuC?referralCode=XFhxHc&utm_medium=integration&utm_source=template&utm_campaign=generic)
 
 ## Quick Start
 
