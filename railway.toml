@@ -12,6 +12,7 @@ name = "openclaw"
 [services.variables]
 ANTHROPIC_API_KEY = { description = "Anthropic API key from console.anthropic.com/settings/keys", required = true }
 TELEGRAM_BOT_TOKEN = { description = "Telegram bot token from @BotFather (send /newbot)", required = false }
+TELEGRAM_ALLOWED_USERS = { description = "Your Telegram user ID (message @userinfobot to get it). Required if using Telegram.", required = false }
 DISCORD_BOT_TOKEN = { description = "Discord bot token", required = false }
 SLACK_BOT_TOKEN = { description = "Slack bot token (xoxb-...)", required = false }
 SLACK_APP_TOKEN = { description = "Slack app token for Socket Mode (xapp-...)", required = false }
