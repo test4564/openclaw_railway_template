@@ -14,39 +14,56 @@ Deploy your own personal AI assistant gateway on Railway. Connect to Telegram, D
 
 ## Quick Start
 
-### 1. Get Your API Key
+### 1. Get Your Credentials
 
-You'll need an Anthropic API key:
-- Go to https://console.anthropic.com/settings/keys
-- Create a new API key
-- Copy it for the deployment
+**Required:**
+- Anthropic API key from https://console.anthropic.com/settings/keys
+
+**For Telegram:**
+- Message [@BotFather](https://t.me/BotFather) on Telegram, send `/newbot`, copy the token
+- Message [@userinfobot](https://t.me/userinfobot) to get your Telegram user ID
 
 ### 2. Deploy to Railway
 
-Click the "Deploy on Railway" button above, then:
-1. Set `ANTHROPIC_API_KEY` to your Anthropic API key
-2. (Optional) Set `TELEGRAM_BOT_TOKEN` to connect Telegram immediately
-3. Click "Deploy"
+Click the "Deploy on Railway" button above, then set these variables:
 
-### 3. Add Telegram Bot (Recommended)
+| Variable | Value |
+|----------|-------|
+| `ANTHROPIC_API_KEY` | Your Anthropic API key |
+| `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather |
+| `TELEGRAM_ALLOWED_USERS` | Your Telegram user ID (from @userinfobot) |
 
-1. Open Telegram and message [@BotFather](https://t.me/BotFather)
-2. Send `/newbot` and follow the prompts
-3. Copy the bot token
-4. Add it to `TELEGRAM_BOT_TOKEN` in Railway variables
+### 3. Add Persistent Storage (Important!)
+
+Volumes can't be auto-configured, so after deploying:
+
+1. Go to your service → **Settings** → **Volumes**
+2. Click **Add Volume**
+3. Set mount path: `/home/node/.openclaw`
+4. Add environment variable: `RAILWAY_RUN_UID=0`
 5. Redeploy
+
+Without this, conversation history and settings are lost on each redeploy.
 
 ## Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `ANTHROPIC_API_KEY` | **Yes** | Your Anthropic API key |
-| `TELEGRAM_BOT_TOKEN` | Recommended | Telegram bot token from @BotFather |
+| `TELEGRAM_BOT_TOKEN` | For Telegram | Bot token from @BotFather |
+| `TELEGRAM_ALLOWED_USERS` | For Telegram | Your Telegram user ID (security: restricts who can use the bot) |
+| `RAILWAY_RUN_UID` | For volumes | Set to `0` if using a volume |
 | `DISCORD_BOT_TOKEN` | Optional | Discord bot token |
 | `SLACK_BOT_TOKEN` | Optional | Slack bot token |
 | `SLACK_APP_TOKEN` | Optional | Slack app token (for Socket Mode) |
 | `OPENAI_API_KEY` | Optional | Alternative to Anthropic |
 | `OPENCLAW_GATEWAY_TOKEN` | Auto-generated | For remote gateway access |
+
+## Security
+
+The `TELEGRAM_ALLOWED_USERS` variable is **required** when using Telegram. Without it, anyone who finds your bot could use it and drain your API credits.
+
+To allow multiple users, the format is comma-separated IDs (feature coming soon).
 
 ## Adding More Channels
 
@@ -63,26 +80,13 @@ openclaw channels add --channel slack --bot-token "xoxb-..." --app-token "xapp-.
 openclaw channels login
 ```
 
-## Persistent Storage
-
-This template uses a Railway volume mounted at `/home/node/.openclaw` to persist:
-- Configuration files
-- Conversation history
-- Session data
-- Credentials
-
-Data survives redeploys and restarts.
-
 ## Verifying Deployment
 
 Check the Railway logs for:
 ```
-Starting OpenClaw gateway on port ...
-```
-
-You can also run in Railway's terminal:
-```bash
-openclaw health
+Building configuration...
+Enabling Telegram for user(s): <your-user-id>
+Starting OpenClaw gateway on port 8080...
 ```
 
 ## Troubleshooting
@@ -91,15 +95,23 @@ openclaw health
 
 1. Check Railway logs for errors
 2. Verify `ANTHROPIC_API_KEY` is set correctly
-3. For Telegram, ensure the bot token is valid
+3. For Telegram, ensure both `TELEGRAM_BOT_TOKEN` and `TELEGRAM_ALLOWED_USERS` are set
+
+### "TELEGRAM_ALLOWED_USERS is not set" error
+
+You must set your Telegram user ID. Message @userinfobot on Telegram to get it.
+
+### Permission errors with volume
+
+Add `RAILWAY_RUN_UID=0` to your environment variables.
 
 ### Gateway token
 
-If you need the auto-generated gateway token, check the deployment logs on first run.
+The gateway token is auto-generated on first run. Check the deployment logs to find it.
 
 ## Links
 
-- [OpenClaw Documentation](https://github.com/anthropics/openclaw)
+- [OpenClaw Documentation](https://docs.openclaw.ai)
 - [Railway Documentation](https://docs.railway.app/)
 - [Anthropic Console](https://console.anthropic.com/)
 
