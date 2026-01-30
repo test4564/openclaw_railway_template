@@ -31,19 +31,14 @@ Without a volume, conversation history is lost on redeploy.
 **Via CLI:**
 ```bash
 railway link
-railway volume add --mount-path /home/node/.openclaw
+railway volume add --mount-path /root/.openclaw
 ```
 
 **Via UI:**
 1. Open your project in Railway dashboard
 2. Right-click on the service in the canvas view
 3. Select **Attach Volume**
-4. Mount path: `/home/node/.openclaw`
-
-Then add this environment variable:
-- `RAILWAY_RUN_UID` = `0`
-
-Redeploy the service.
+4. Mount path: `/root/.openclaw`
 
 ### 4. Chat
 
@@ -71,7 +66,6 @@ openclaw channels list
 | `ANTHROPIC_API_KEY` | Yes | Anthropic API key |
 | `TELEGRAM_BOT_TOKEN` | For Telegram | Bot token from @BotFather |
 | `TELEGRAM_ALLOWED_USERS` | For Telegram | Your user ID (prevents others from using your bot) |
-| `RAILWAY_RUN_UID` | For volumes | Set to `0` |
 | `OPENAI_API_KEY` | Optional | Alternative to Anthropic |
 
 ## Links
