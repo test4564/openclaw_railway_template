@@ -24,13 +24,21 @@ cat > ~/.openclaw/openclaw.json << 'BASECONFIG'
   "agents": {
     "defaults": {
       "workspace": "~/.openclaw/workspace",
-      "model": {
-        "primary": "google/gemini-3-pro-preview"
-      },
       "models": {
         "google/gemini-3-pro-preview": {
           "alias": "gemini"
-        }
+        },
+        "opencode/claude-opus-4-5": {
+          "alias": "Opus"
+        },
+        "opencode/glm-4.7-free": {},
+        "opencode/kimi-k2.5-free": {},
+        "opencode/minimax-m2.1-free": {},
+        "opencode/big-pickle": {},
+        "opencode/gpt-5-nano": {}
+      },
+      "model": {
+        "primary": "opencode/glm-4.7-free"
       }
     }
   },
@@ -48,6 +56,10 @@ cat >> ~/.openclaw/openclaw.json << 'MIDCONFIG'
     "profiles": {
       "google:default": {
         "provider": "google",
+        "mode": "api_key"
+      },
+      "opencode:default": {
+        "provider": "opencode",
         "mode": "api_key"
       }
     }
@@ -120,6 +132,11 @@ cat > ~/.openclaw/agents/main/agent/auth-profiles.json << AUTHCONFIG
       "type": "api_key",
       "provider": "google",
       "key": "$GOOGLE_API_KEY"
+    },
+    "opencode:default": {
+      "type": "api_key",
+      "provider": "opencode",
+      "key": "$OPENCODE_API_KEY"
     }
   }
 }
