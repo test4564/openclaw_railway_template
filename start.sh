@@ -5,6 +5,7 @@ set -e
 mkdir -p ~/.openclaw/workspace
 mkdir -p ~/.openclaw/agents/main/sessions
 mkdir -p ~/.openclaw/credentials
+mkdir -p ~/.openclaw/agents/main/agent
 chmod 700 ~/.openclaw
 
 # Auto-generate gateway token if not provided
@@ -24,7 +25,12 @@ cat > ~/.openclaw/openclaw.json << 'BASECONFIG'
     "defaults": {
       "workspace": "~/.openclaw/workspace",
       "model": {
-        "primary": "anthropic/claude-sonnet-4-20250514"
+        "primary": "google/gemini-3-pro-preview"
+      },
+      "models": {
+        "google/gemini-3-pro-preview": {
+          "alias": "gemini"
+        }
       }
     }
   },
@@ -36,6 +42,42 @@ BASECONFIG
 echo "      \"token\": \"$OPENCLAW_GATEWAY_TOKEN\"" >> ~/.openclaw/openclaw.json
 
 cat >> ~/.openclaw/openclaw.json << 'MIDCONFIG'
+    }
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "bun"
+    }
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "boot-md": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        }
+      }
     }
   },
   "channels": {
@@ -68,6 +110,22 @@ cat >> ~/.openclaw/openclaw.json << 'ENDCONFIG'
 ENDCONFIG
 
 chmod 600 ~/.openclaw/openclaw.json
+
+# create ~/.openclaw/agents/main/agent/auth-profiles.json
+cat > ~/.openclaw/agents/main/agent/auth-profiles.json << AUTHCONFIG
+{
+  "version": 1,
+  "profiles": {
+    "google:default": {
+      "type": "api_key",
+      "provider": "google",
+      "key": "$GOOGLE_API_KEY"
+    }
+  }
+}
+AUTHCONFIG
+
+chmod 600 ~/.openclaw/agents/main/agent/auth-profiles.json
 
 # Run doctor to fix any config issues
 echo "Running openclaw doctor --fix..."
